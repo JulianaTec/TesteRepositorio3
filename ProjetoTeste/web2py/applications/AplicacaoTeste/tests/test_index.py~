@@ -2,7 +2,10 @@ from unittest import TestCase
 
 # Importa o controlador que sera testado
 <<<<<<< HEAD
-import os
+import os,sys
+
+print '>>>>',os.path.dirname(__file__)
+print '>>>>',sys.path
 
 print os.path.dirname(__file__)
 =======
