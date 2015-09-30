@@ -1,0 +1,4 @@
+127.0.0.1, 2015-08-05 13:08:18, GET, /site_two_alterado/Veiculo/Inicio, HTTP/1.1, 500, 0.073000
+127.0.0.1, 2015-08-05 13:08:18, GET, /favicon.ico, HTTP/1.1, 400, 0.000000
+127.0.0.1, 2015-08-05 13:08:20, GET, /admin/default/ticket/site_two_alterado/127.0.0.1.2015-08-05.13-08-18.afb9b90b-8ea4-432f-9691-aa09c50e233e, HTTP/1.1, 200, 0.114000
+127.0.0.1, 2015-08-05 13:08:20, GET, /favicon.ico, HTTP/1.1, 400, 0.001000

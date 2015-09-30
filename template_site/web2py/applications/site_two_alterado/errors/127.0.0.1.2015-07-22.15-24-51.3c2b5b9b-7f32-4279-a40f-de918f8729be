@@ -1,0 +1,757 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.ValueError'> invalid literal for long() with base 10: 'vendor'"
+p3
+sS'layer'
+p4
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers/forms.py'
+p5
+sS'code'
+p6
+S'__author__ = \'TecSUS-3\'\n\n####################################### GLOBALS #######################################\nglobal request, session, db, response\n\n\n####################################### ACTIONS #######################################\ndef car_model_form():\n    """\n    Creates a form using web2py helpers.\n\n    This is the most manual method of creating a form. It allows\n    the specification of every aspect of the resulting html\n    elements.\n\n    Some notes:\n        Validators must be specified during the INPUT fields creation.\n        form.accepts() must be called to process the form.\n        Database insertion must be handled manually.\n    """\n\n    # Must repeat the field validators declared in the db.py\n    car_model_input=INPUT(_name=\'car_model\', requires=IS_NOT_EMPTY())\n    base_price_input=INPUT(_name=\'base_price\', requires=IS_NOT_EMPTY())\n\n    #neste ponto define a posi\xc3\xa7\xc3\xa3o dos dados dentro de uma tabela\n    # Manual creation of the html table\n    table_rows = []\n    table_rows.append(TR(\'Car Model:\', car_model_input))\n    table_rows.append(TR(\'Base Price:\', base_price_input))\n    # Fields starting with _ are passed to the html as attribute elements\n    table_rows.append(TR(TD(INPUT(_type=\'submit\'), _colspan=\'2\', _align=\'center\')))\n    table = TABLE(table_rows)\n\n    form = FORM(table)\n\n    #momento em que realmente o dado \xc3\xa9 colocado dentro do banco de dados\n    # Processing the form submition\n    if form.accepts(request,session):\n        # Retriving the form fields\n        form_car_model = form.vars.car_model\n        form_base_price = form.vars.base_price\n        # Inserting in the database\n        db.car_model.insert(car_model=form_car_model, car_base_price=form_base_price)\n        # Tell the user about the insertion\n        response.flash = \'New car: \' + form_car_model\n    elif form.errors:\n        response.flash = \'Form has errors\'\n    else:\n        response.flash = \'Please fill the form\'\n\n    form2=FORM(\'Car Model:\', INPUT(_name=\'car_model\'),\n               \'Base Price:\', INPUT(_name=\'base_price\'),\n               INPUT(_type=\'submit\'))\n\n    #momento em que realmente o dado \xc3\xa9 colocado dentro do banco de dados\n    # Processing the form submition\n    if form2.accepts(request,session):\n        # Retriving the form fields\n        form2_car_model = form.vars.car_model\n        form2_base_price = form.vars.base_price\n        # Inserting in the database\n        db.car_model.insert(car_model=form2_car_model, car_base_price=form2_base_price)\n        # Tell the user about the insertion\n        response.flash = \'New car: \' + form2_car_model\n    elif form.errors:\n        response.flash = \'Form has errors\'\n    else:\n        response.flash = \'Please fill the form\'\n\n\n    return dict(car_model_form=form, car=form2)\n\n\n\ndef vendor_sqlform():\n    """\n    Create a simple form using the SQLFORM function of web2py.\n\n    Some notes:\n        The accepts function validates each field and write the results to de database.\n    """\n\n    #aqui ele formata tudo sozinho e ainda envia para o banco sozinho tamb\xc3\xa9m\n    #mas n\xc3\xa3o mostra a mensagem de falha ou aceita\xc3\xa7\xc3\xa3o sozinho\n    vendor_sqlform = SQLFORM(db.vendor)\n\n    if vendor_sqlform.accepts(request,session):\n        response.flash = \'Form accepted\'\n    elif vendor_sqlform.errors:\n        response.flash = \'Form has errors\'\n    else:\n        response.flash = \'Please fill the form\'\n\n    return locals()\n\n\ndef accessory_crud():\n    """ Create a simple form using the CRUD function of web2py. """\n\n    #aqui ele formata tudo sozinho e ainda envia para o banco sozinho tamb\xc3\xa9m\n    #mostra a mensagem de falha sozinho\n    from gluon.tools import Crud\n    crud = Crud(db)\n    accessory_crud = crud.create(db.accessory)\n    return locals()\n\n\n\ndef sale_sqlform_factory():\n    """\n    Create a custom form using SQLFORM.factory and custom widgets.\n\n    This action creates a form based on the sale table but it also includes a\n    wrapper field which can hold one of the following:\n        A link to a grid that allows the user to select accessories to include in the sale.\n        A grid holding the selected accessories.\n\n    The ids of the selected accessories are passed in the request.\n    """\n\n    accessory_wrapper_field = Field(\'IncludedAccessories\',widget=custom_accessory_widget, type=\'boolean\')\n    sale_sqlform_factory    = SQLFORM.factory(db.sale, accessory_wrapper_field)\n\n    if sale_sqlform_factory.process().accepted:\n        sale_id = db.sale.insert(**db.sale._filter_fields(sale_sqlform_factory.vars))\n        insert_accessories(sale_id, request.vars.id)\n\t#TODO request.clear()\n        response.flash = \'Record inserted\'\n\n    return locals()\n\n\n#fun\xc3\xa7\xc3\xb5es auxiliares na venda\n\n### Database Functions ###\n\ndef insert_accessories(sale_id, accessories_ids):\n    if not accessories_ids:\n        return\n\n    if isinstance(accessories_ids,str):\n        accessories_ids = [accessories_ids]\n\n    for accessory_id in accessories_ids:\n        db.accessory_list.insert(sale_id=sale_id, accessory_id=accessory_id)\n\n    return\n\n### Custom Widgets ###\ndef custom_accessory_widget(field,value):\n\n    accessories_ids=fetch_id_list()\n\n    if accessories_ids:\n        return accessories_grid_from_ids(accessories_ids)\n    else:\n        return accessory_bt()\n\n    return\n\n    ### Auxiliary Functions ###\ndef fetch_id_list():\n    id_list = request.vars.id\n    if isinstance(id_list,str):\n            id_list = [id_list]\n    return id_list\n\n\n### Html Helper Functions ###\ndef accessory_bt():\n    return A(\'Add Accessories\', _href=\'accessories_grid_selectable\')\n\ndef accessories_grid_from_ids(accessories_ids):\n    query  = db.accessory.id.belongs(accessories_ids)\n    params = {}\n\n    grid   = build_accessories_grid(query, params)\n    link   = change_accessories_link()\n\n    grid.append(link)\n\n    return grid\n\n### Grid Functions ###\ndef build_accessories_grid(query, extra_parameters):\n    default_parameters = {\n        \'fields\':     [db.accessory.accessory_name, db.accessory.accessory_price],\n        \'csv\':        False,\n        \'details\':    False,\n        \'searchable\': False\n    }\n\n    parameters = merge_dicts(default_parameters, extra_parameters)\n\n    grid = SQLFORM.grid(query, **parameters)\n    remove_grid_counter(grid)\n\n    return grid\n\ndef change_accessories_link():\n    return A(\'Change Accessories\', _href=\'accessories_grid_selectable\')\n\n\ndef merge_dicts(dict1, dict2):\n    resulting_dict = dict1.copy()\n    resulting_dict.update(dict2)\n\n    return resulting_dict\n\ndef remove_grid_counter(grid):\n    del grid[0][0]\n\n\n\nresponse._vars=response._caller(sale_sqlform_factory)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__hash__'
+p12
+S"<method-wrapper '__hash__' of exceptions.ValueError object>"
+p13
+sS'__setattr__'
+p14
+S"<method-wrapper '__setattr__' of exceptions.ValueError object>"
+p15
+sS'__reduce_ex__'
+p16
+S'<built-in method __reduce_ex__ of exceptions.ValueError object>'
+p17
+sS'__getslice__'
+p18
+S"<method-wrapper '__getslice__' of exceptions.ValueError object>"
+p19
+sS'__getitem__'
+p20
+S"<method-wrapper '__getitem__' of exceptions.ValueError object>"
+p21
+sS'__setstate__'
+p22
+S'<built-in method __setstate__ of exceptions.ValueError object>'
+p23
+sS'__reduce__'
+p24
+S'<built-in method __reduce__ of exceptions.ValueError object>'
+p25
+sS'__str__'
+p26
+S"<method-wrapper '__str__' of exceptions.ValueError object>"
+p27
+sS'__format__'
+p28
+S'<built-in method __format__ of exceptions.ValueError object>'
+p29
+sS'__getattribute__'
+p30
+S"<method-wrapper '__getattribute__' of exceptions.ValueError object>"
+p31
+sS'__class__'
+p32
+S"<type 'exceptions.ValueError'>"
+p33
+sS'__unicode__'
+p34
+S'<built-in method __unicode__ of exceptions.ValueError object>'
+p35
+sS'__delattr__'
+p36
+S"<method-wrapper '__delattr__' of exceptions.ValueError object>"
+p37
+sS'__subclasshook__'
+p38
+S'<built-in method __subclasshook__ of type object>'
+p39
+sS'__repr__'
+p40
+S"<method-wrapper '__repr__' of exceptions.ValueError object>"
+p41
+sS'args'
+p42
+S'("invalid literal for long() with base 10: \'vendor\'",)'
+p43
+sS'__dict__'
+p44
+S'{}'
+p45
+sS'__sizeof__'
+p46
+S'<built-in method __sizeof__ of exceptions.ValueError object>'
+p47
+sS'__doc__'
+p48
+S"'Inappropriate argument value (of correct type).'"
+p49
+sS'__init__'
+p50
+S"<method-wrapper '__init__' of exceptions.ValueError object>"
+p51
+sS'__new__'
+p52
+S'<built-in method __new__ of type object>'
+p53
+ssS'evalue'
+p54
+S"invalid literal for long() with base 10: 'vendor'"
+p55
+sS'request'
+p56
+cgluon.html
+XML_unpickle
+p57
+(S's\xf0l\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>site_two</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>forms</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-678e6dcf-0c5a-48d3-b990-2b654d623589<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_site_two</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_tecsus_showcase</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-7aec42ec-18d9-46a3-a611-0cad30eaa8f1<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-10142998-b049-453c-be75-64faa6d54f81<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>797</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundary47vzBB2G6vErhPNW</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CACHE_CONTROL</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_LENGTH</td><td style="vertical-align:top;">:</td><td><div>797</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONTENT_TYPE</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundary47vzBB2G6vErhPNW</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-10142998-b049-453c-be75-64faa6d54f81; session_id_tecsus_showcase=127.0.0.1-7aec42ec-18d9-46a3-a611-0cad30eaa8f1; session_id_admin=127.0.0.1-678e6dcf-0c5a-48d3-b990-2b654d623589; session_id_site_two=127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ORIGIN</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>51716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>TecSUS-3-PC</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\tecsus_Showcase\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\welcome\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x3797cb0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;192.241.173.135&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;TecSUS-3-PC&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_length</td><td style="vertical-align:top;">:</td><td><div>797</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">content_type</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundary47vzBB2G6vErhPNW</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cache_control</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_length</td><td style="vertical-align:top;">:</td><td><div>797</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_content_type</td><td style="vertical-align:top;">:</td><td><div>multipart/form-data; boundary=----WebKitFormBoundary47vzBB2G6vErhPNW</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-10142998-b049-453c-be75-64faa6d54f81; session_id_tecsus_showcase=127.0.0.1-7aec42ec-18d9-46a3-a611-0cad30eaa8f1; session_id_admin=127.0.0.1-678e6dcf-0c5a-48d3-b990-2b654d623589; session_id_site_two=127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_origin</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>192.241.173.135</div></td></tr><tr><td><div>fe80::487:2eff:2cf4:8cd6%11</div></td></tr><tr><td><div>TecSUS-3-PC</div></td></tr><tr><td><div>TecSUS-3-PC.tecsus.com.br</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.0.5</div></td></tr><tr><td><div>fe80::5efe:192.168.0.5%12</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>51716</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>TecSUS-3-PC</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.10.4-stable+timestamp.2015.04.26.15.11.54</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x01E1D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x03732F10&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x04706D70&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x01E1D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x03732F10&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x04706D70&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\tecsus_Showcase\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\welcome\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x3797cb0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;192.241.173.135&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;TecSUS-3-PC&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>192.241.173.135</div></td></tr><tr><td><div>fe80::487:2eff:2cf4:8cd6%11</div></td></tr><tr><td><div>TecSUS-3-PC</div></td></tr><tr><td><div>TecSUS-3-PC.tecsus.com.br</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.0.5</div></td></tr><tr><td><div>fe80::5efe:192.168.0.5%12</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.10.4-stable+timestamp.2015.04.26.15.11.54</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_sheduler</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2015, 7, 22, 15, 24, 51, 17000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/site_two/forms/sale_sqlform_factory</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2015, 7, 22, 18, 24, 51, 17000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">uuid</td><td style="vertical-align:top;">:</td><td><div>site_two/127.0.0.1.2015-07-22.15-24-51.3c2b5b9b-7f32-4279-a40f-de918f8729be</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x0A4B79F0&gt;</div></td></tr></table></div>'
+tRp58
+sS'frames'
+p59
+(lp60
+(dp61
+S'file'
+p62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\restricted.py'
+p63
+sS'dump'
+p64
+(dp65
+S'environment'
+p66
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p67
+sS'ccode'
+p68
+S'<code object <module> at 09CA6B60, file "C:\\User...lications\\site_two\\controllers/forms.py", line 1>'
+p69
+ssS'lnum'
+p70
+I227
+sS'lines'
+p71
+(dp72
+I224
+S'            ccode = code'
+p73
+sI225
+S'        else:'
+p74
+sI226
+S'            ccode = compile2(code, layer)'
+p75
+sI227
+S'        exec ccode in environment'
+p76
+sI228
+S'    except HTTP:'
+p77
+sI229
+S'        raise'
+p78
+sI230
+S'    except RestrictedError:'
+p79
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p80
+sI222
+S'    try:'
+p81
+sI223
+S'        if isinstance(code, types.CodeType):'
+p82
+ssS'call'
+p83
+S'(code="__author__ = \'TecSUS-3\'\\n\\n#######################...nse._vars=response._caller(sale_sqlform_factory)\\n", environment={\'A\': <class \'gluon.html.A\'>, \'ANY_OF\': <class \'gluon.validators.ANY_OF\'>, \'ASSIGNJS\': <function ASSIGNJS>, \'AppConfig\': <function AppConfig>, \'Auth\': <class \'gluon.tools.Auth\'>, \'B\': <class \'gluon.html.B\'>, \'BEAUTIFY\': <class \'gluon.html.BEAUTIFY\'>, \'BODY\': <class \'gluon.html.BODY\'>, \'BR\': <class \'gluon.html.BR\'>, \'BUTTON\': <class \'gluon.html.BUTTON\'>, ...}, layer=r\'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers/forms.py\')'
+p84
+sS'func'
+p85
+S'restricted'
+p86
+sa(dp87
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers\\forms.py'
+p88
+sg64
+(dp89
+sg70
+I216
+sg71
+(dp90
+I205
+S'def merge_dicts(dict1, dict2):'
+p91
+sI206
+S'    resulting_dict = dict1.copy()'
+p92
+sI207
+S'    resulting_dict.update(dict2)'
+p93
+sI208
+S''
+sI209
+S'    return resulting_dict'
+p94
+sI210
+S''
+sI211
+S'def remove_grid_counter(grid):'
+p95
+sI212
+S'    del grid[0][0]'
+p96
+sI213
+S''
+sI214
+S''
+ssg83
+S'()'
+p97
+sg85
+S'<module>'
+p98
+sa(dp99
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\globals.py'
+p100
+sg64
+(dp101
+S'self'
+p102
+S'undefined'
+p103
+sS'f'
+S'<function sale_sqlform_factory>'
+p104
+ssg70
+I393
+sg71
+(dp105
+I388
+S"        self.flash = ''            # used by the default view layout"
+p106
+sI389
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p107
+sI390
+S'        self.menu = []             # used by the default view layout'
+p108
+sI391
+S'        self.files = []            # used by web2py_ajax.html'
+p109
+sI392
+S'        self._vars = None'
+p110
+sI393
+S'        self._caller = lambda f: f()'
+p111
+sI394
+S'        self._view_environment = None'
+p112
+sI395
+S'        self._custom_commit = None'
+p113
+sI396
+S'        self._custom_rollback = None'
+p114
+sI397
+S"        self.generic_patterns = ['*']"
+p115
+ssg83
+S'(f=<function sale_sqlform_factory>)'
+p116
+sg85
+S'<lambda>'
+p117
+sa(dp118
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers\\forms.py'
+p119
+sg64
+(dp120
+sg70
+I126
+sg71
+(dp121
+I128
+S'\t#TODO request.clear()'
+p122
+sI129
+S"        response.flash = 'Record inserted'"
+p123
+sI130
+S''
+sI121
+S''
+sI122
+S"    accessory_wrapper_field = Field('IncludedAccessories',widget=custom_accessory_widget, type='boolean')"
+p124
+sI123
+S'    sale_sqlform_factory    = SQLFORM.factory(db.sale, accessory_wrapper_field)'
+p125
+sI124
+S''
+sI125
+S'    if sale_sqlform_factory.process().accepted:'
+p126
+sI126
+S'        sale_id = db.sale.insert(**db.sale._filter_fields(sale_sqlform_factory.vars))'
+p127
+sI127
+S'        insert_accessories(sale_id, request.vars.id)'
+p128
+ssg83
+S'()'
+p129
+sg85
+S'sale_sqlform_factory'
+p130
+sa(dp131
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\objects.py'
+p132
+sg64
+(dp133
+S'self._listify'
+p134
+S'<bound method Table._listify of <Table sale (id,...or_id,sale_date,sale_discount,sale_total_price)>>'
+p135
+sS'fields'
+p136
+S"{'car_id': 'car', 'sale_date': datetime.date(2014, 10, 12), 'sale_discount': 10, 'sale_total_price': '12', 'vendor_id': 'vendor'}"
+p137
+sS'self'
+p138
+S'<Table sale (id,car_id,vendor_id,sale_date,sale_discount,sale_total_price)>'
+p139
+sS'ret'
+p140
+g103
+sS'self._db._adapter'
+p141
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p142
+sS'self._db._adapter.insert'
+p143
+S'<bound method SQLiteAdapter.insert of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p144
+sS'self._db'
+p145
+S'<DAL uri="sqlite://storage.sqlite">'
+p146
+ssg70
+I737
+sg71
+(dp147
+I736
+S'        if any(f(fields) for f in self._before_insert): return 0'
+p148
+sI737
+S'        ret =  self._db._adapter.insert(self, self._listify(fields))'
+p149
+sI738
+S'        if ret and self._after_insert:'
+p150
+sI739
+S'            fields = Row(fields)'
+p151
+sI740
+S'            [f(fields,ret) for f in self._after_insert]'
+p152
+sI741
+S'        return ret'
+p153
+sI732
+S''
+sI733
+S'    def insert(self, **fields):'
+p154
+sI734
+S'        fields = self._defaults(fields)'
+p155
+sI735
+S'        self._attempt_upload(fields)'
+p156
+ssg83
+S"(self=<Table sale (id,car_id,vendor_id,sale_date,sale_discount,sale_total_price)>, **fields={'car_id': 'car', 'sale_date': datetime.date(2014, 10, 12), 'sale_discount': 10, 'sale_total_price': '12', 'vendor_id': 'vendor'})"
+p157
+sg85
+S'insert'
+p158
+sa(dp159
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p160
+sg64
+(dp161
+S'self._insert'
+p162
+S'<bound method SQLiteAdapter._insert of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p163
+sS'query'
+p164
+g103
+sS'self'
+p165
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p166
+sS'fields'
+p167
+S"[(<pydal.objects.Field object>, 10), (<pydal.objects.Field object>, datetime.date(2014, 10, 12)), (<pydal.objects.Field object>, 'vendor'), (<pydal.objects.Field object>, '12'), (<pydal.objects.Field object>, 'car')]"
+p168
+sS'table'
+p169
+S'<Table sale (id,car_id,vendor_id,sale_date,sale_discount,sale_total_price)>'
+p170
+ssg70
+I720
+sg71
+(dp171
+I715
+S''
+sI716
+S'    def _insert_empty(self, table):'
+p172
+sI717
+S"        return 'INSERT INTO %s DEFAULT VALUES;' % (table.sqlsafe)"
+p173
+sI718
+S''
+sI719
+S'    def insert(self, table, fields):'
+p174
+sI720
+S'        query = self._insert(table,fields)'
+p175
+sI721
+S'        try:'
+p176
+sI722
+S'            self.execute(query)'
+p177
+sI723
+S'        except Exception:'
+p178
+sI724
+S'            e = sys.exc_info()[1]'
+p179
+ssg83
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, table=<Table sale (id,car_id,vendor_id,sale_date,sale_discount,sale_total_price)>, fields=[(<pydal.objects.Field object>, 10), (<pydal.objects.Field object>, datetime.date(2014, 10, 12)), (<pydal.objects.Field object>, 'vendor'), (<pydal.objects.Field object>, '12'), (<pydal.objects.Field object>, 'car')])"
+p180
+sg85
+g158
+sa(dp181
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p182
+sg64
+(dp183
+S'f'
+g103
+sS'fields'
+p184
+S"[(<pydal.objects.Field object>, 10), (<pydal.objects.Field object>, datetime.date(2014, 10, 12)), (<pydal.objects.Field object>, 'vendor'), (<pydal.objects.Field object>, '12'), (<pydal.objects.Field object>, 'car')]"
+p185
+sS'self'
+p186
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p187
+sS'values'
+p188
+g103
+sS'v'
+g103
+sS'self.expand'
+p189
+S'<bound method SQLiteAdapter.expand of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p190
+ssg70
+I711
+sg71
+(dp191
+I706
+S''
+sI707
+S'    def _insert(self, table, fields):'
+p192
+sI708
+S'        table_rname = table.sqlsafe'
+p193
+sI709
+S'        if fields:'
+p194
+sI710
+S"            keys = ','.join(f.sqlsafe_name for f, v in fields)"
+p195
+sI711
+S"            values = ','.join(self.expand(v, f.type) for f, v in fields)"
+p196
+sI712
+S"            return 'INSERT INTO %s(%s) VALUES (%s);' % (table_rname, keys, values)"
+p197
+sI713
+S'        else:'
+p198
+sI714
+S'            return self._insert_empty(table)'
+p199
+sI715
+S''
+ssg83
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, table=<Table sale (id,car_id,vendor_id,sale_date,sale_discount,sale_total_price)>, fields=[(<pydal.objects.Field object>, 10), (<pydal.objects.Field object>, datetime.date(2014, 10, 12)), (<pydal.objects.Field object>, 'vendor'), (<pydal.objects.Field object>, '12'), (<pydal.objects.Field object>, 'car')])"
+p200
+sg85
+S'_insert'
+p201
+sa(dp202
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p203
+sg64
+(dp204
+S'f'
+S'<pydal.objects.Field object>'
+p205
+sS'fields'
+p206
+g103
+sS'self'
+p207
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p208
+sS'f.type'
+p209
+S"'reference vendor'"
+p210
+sS'values'
+p211
+g103
+sS'v'
+S"'vendor'"
+p212
+sS'self.expand'
+p213
+S'<bound method SQLiteAdapter.expand of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p214
+ssg70
+I711
+sg71
+(dp215
+I706
+S''
+sI707
+S'    def _insert(self, table, fields):'
+p216
+sI708
+S'        table_rname = table.sqlsafe'
+p217
+sI709
+S'        if fields:'
+p218
+sI710
+S"            keys = ','.join(f.sqlsafe_name for f, v in fields)"
+p219
+sI711
+S"            values = ','.join(self.expand(v, f.type) for f, v in fields)"
+p220
+sI712
+S"            return 'INSERT INTO %s(%s) VALUES (%s);' % (table_rname, keys, values)"
+p221
+sI713
+S'        else:'
+p222
+sI714
+S'            return self._insert_empty(table)'
+p223
+sI715
+S''
+ssg83
+S"((f=<pydal.objects.Field object>, v='vendor'))"
+p224
+sg85
+S'<genexpr>'
+p225
+sa(dp226
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p227
+sg64
+(dp228
+S'builtinstr'
+p229
+S"<type 'str'>"
+p230
+sS'field_type'
+p231
+S"'reference vendor'"
+p232
+sS'self'
+p233
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p234
+sS'expression'
+p235
+S"'vendor'"
+p236
+sS'self.represent'
+p237
+S'<bound method SQLiteAdapter.represent of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p238
+ssg70
+I920
+sg71
+(dp239
+I915
+S"                out = '(%s)' % op"
+p240
+sI916
+S'            else:'
+p241
+sI917
+S'                out = op()'
+p242
+sI918
+S'            return out'
+p243
+sI919
+S'        elif field_type:'
+p244
+sI920
+S'            return str(self.represent(expression,field_type))'
+p245
+sI921
+S'        elif isinstance(expression,(list,tuple)):'
+p246
+sI922
+S"            return ','.join(self.represent(item,field_type) \\"
+p247
+sI923
+S'                                for item in expression)'
+p248
+sI924
+S'        elif isinstance(expression, bool):'
+p249
+ssg83
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, expression='vendor', field_type='reference vendor', colnames=False)"
+p250
+sg85
+S'expand'
+p251
+sa(dp252
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py'
+p253
+sg64
+(dp254
+S'builtinstr'
+p255
+S"<type 'str'>"
+p256
+sS'builtinlong'
+p257
+S"<type 'long'>"
+p258
+sS'obj'
+p259
+S"'vendor'"
+p260
+ssg70
+I1371
+sg71
+(dp261
+I1366
+S'            return str(obj)'
+p262
+sI1367
+S"        elif field_is_type('reference'): # reference"
+p263
+sI1368
+S'            # check for tablename first'
+p264
+sI1369
+S'            referenced = fieldtype[9:].strip()'
+p265
+sI1370
+S'            if referenced in self.db.tables:'
+p266
+sI1371
+S'                return str(long(obj))'
+p267
+sI1372
+S"            p = referenced.partition('.')"
+p268
+sI1373
+S"            if p[2] != '':"
+p269
+sI1374
+S'                try:'
+p270
+sI1375
+S'                    ftype = self.db[p[0]][p[2]].type'
+p271
+ssg83
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, obj='vendor', fieldtype='reference vendor')"
+p272
+sg85
+S'represent'
+p273
+sasS'pyver'
+p274
+S'Python 2.7.8: C:\\Python27\\python.exe (prefix: C:\\Python27)'
+p275
+sS'session'
+p276
+g57
+(S's5\x01\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">last_orderby</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_query</td><td style="vertical-align:top;">:</td><td><div>db.sale.id&gt;0</div></td></tr></table></div>'
+tRp277
+sS'etype'
+p278
+S"<type 'exceptions.ValueError'>"
+p279
+sS'date'
+p280
+S'Wed Jul 22 15:24:51 2015'
+p281
+sS'response'
+p282
+g57
+(S'sY@\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x09DADF80&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_site_two</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div>Success!</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="navbar-brand" href="http://www.web2py.com/" id="web2py-logo"><b>web<span>2</span>py</b>&trade;&nbsp;</a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Principal</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/site_two/default/index</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Meus sites</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/site</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Esta aplica\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Design</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/design/site_two</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Controlador</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/controllers/forms.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Visualiza\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/views/forms/sale_sqlform_factory.html</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Modelo BD</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/models/db.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Modelo de Menu</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/models/menu.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Config.ini</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/private/appconfig.ini</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Layout</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/views/layout.html</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Folha de estilo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two/static/css/web2py-bootstrap3.css</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>banco de dados</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/site_two/appadmin/index</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Erros</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/errors/site_two</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Sobre</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/about/site_two</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>web2py.com</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Download</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/download</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Suporte</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/support</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Demo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/demo_admin</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Exemplos r\xc3\xa1pidos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/examples/default/examples</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Perguntas frequentes</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/AlterEgo</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>V\xc3\xaddeos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/videos/</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Aplica\xc3\xa7\xc3\xb5es gratuitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/appliances</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/plugins</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2pyslices.com/</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Documenta\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Online book</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Pref\xc3\xa1cio</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/00</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Introdu\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/01</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Python</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/02</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Vis\xc3\xa3o Geral</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/03</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>The Core</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/04</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>As views</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/05</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>banco de dados</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/06</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Formul\xc3\xa1rios e Validadores</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/07</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Email e SMS</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/08</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Controle de Acesso</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/09</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Servi\xc3\xa7o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/10</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas de Ajax</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/11</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Componentes e Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/12</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas de deploy</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/13</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Outras Receitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/14</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Helping web2py</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/15</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Buy web2py\'s book</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://stores.lulu.com/web2py</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Comunidade</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Grupos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/usergroups</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Twitter</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://twitter.com/web2py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Chat ao vivo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://webchat.freenode.net/?channels=web2py</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">description</td><td style="vertical-align:top;">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div>web2py, python, framework</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^forms/\\w+\\.py$</div></td></tr><tr><td><div>^forms/sale_sqlform_factory/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_key</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_site_two</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two\\\\sessions\\\\173\\\\04c\\\\127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc&#x27;, mode &#x27;rb+&#x27; at 0x046E9B20&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\sessions\\127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>f025d6610e3c6c5cfe1fdedc4fddff8a</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-78a653c2-f300-491a-b086-7eb20bda4bfc</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_site_two</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>site_two</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Site Two</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>forms/sale_sqlform_factory.html</div></td></tr></table></div>'
+tRp283
+sS'locals'
+p284
+(dp285
+S'referenced'
+p286
+S"'vendor'"
+p287
+sS'obj'
+p288
+S"'vendor'"
+p289
+sS'self'
+p290
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p291
+sS'r'
+S'None'
+p292
+sS'fieldtype'
+p293
+S"'reference vendor'"
+p294
+sS'field_is_type'
+p295
+S'<built-in method startswith of str object>'
+p296
+sssS'traceback'
+p297
+S'Traceback (most recent call last):\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers/forms.py", line 216, in <module>\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\globals.py", line 393, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two\\controllers/forms.py", line 126, in sale_sqlform_factory\n    sale_id = db.sale.insert(**db.sale._filter_fields(sale_sqlform_factory.vars))\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\objects.py", line 737, in insert\n    ret =  self._db._adapter.insert(self, self._listify(fields))\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 720, in insert\n    query = self._insert(table,fields)\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 711, in _insert\n    values = \',\'.join(self.expand(v, f.type) for f, v in fields)\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 711, in <genexpr>\n    values = \',\'.join(self.expand(v, f.type) for f, v in fields)\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 920, in expand\n    return str(self.represent(expression,field_type))\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\packages\\dal\\pydal\\adapters\\base.py", line 1371, in represent\n    return str(long(obj))\nValueError: invalid literal for long() with base 10: \'vendor\'\n'
+p298
+s.
