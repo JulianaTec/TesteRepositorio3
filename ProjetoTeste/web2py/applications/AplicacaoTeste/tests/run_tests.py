@@ -13,24 +13,19 @@
 import sys
 import os
 # Pasta onde fica localizado o web2py
-W2P_PATH = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-3])
-print '===',W2P_PATH
+W2P_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py'
 #W2P_PATH = "/home/rodrigo/Arquivos/web2py" #o comando acima pegara este caminho
 # sys.path.append(os.path.abspath(W2P_PATH))
 # sys.path.append(os.path.abspath(W2P_PATH+'/gluon'))
 # sys.path.append(os.path.abspath(W2P_PATH+'/site-packages'))
 # Pasta anterior a pasta atual (raiz projeto)
-PROJECT_PATH = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-1])
-print '===',PROJECT_PATH
+PROJECT_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py/applications/AplicacaoTeste'
 # Pasta atual, onde o run_tests.py está
-ROOT_PATH = os.path.dirname(__file__)
-print '===',ROOT_PATH
+ROOT_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py/applications/AplicacaoTeste/tests'
 #adiciona no sys.path os diretorios que contém arquivos ou módulos a serem testados
 mods=['controllers','modules']
-APP = os.path.sep.join(ROOT_PATH.split(os.path.sep)[:-1])
-print '===',APP
 for m in mods:
-    sys.path.append(os.path.abspath(APP+'/'+m))
+    sys.path.append(os.path.abspath(PROJECT_PATH+'/'+m))
 
 # Roda os testes da pasta test/
 from unittest import TestLoader, TextTestRunner
