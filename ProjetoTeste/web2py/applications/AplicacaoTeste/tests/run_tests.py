@@ -24,8 +24,9 @@ PROJECT_PATH = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-1
 ROOT_PATH = os.path.dirname(__file__)
 #adiciona no sys.path os diretorios que contém arquivos ou módulos a serem testados
 mods=['controllers','modules']
+APP = os.path.sep.join(ROOT_PATH.split(os.path.sep)[:-1])
 for m in mods:
-    sys.path.append(os.path.abspath(PROJECT_PATH+'/'+m))
+    sys.path.append(os.path.abspath(APP+'/'+m))
 
 # Roda os testes da pasta test/
 from unittest import TestLoader, TextTestRunner
