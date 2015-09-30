@@ -1,3 +1,0 @@
-{{extend 'layout.html'}}
-<h1>Car Models</h1>
-{{=car_model_grid}}

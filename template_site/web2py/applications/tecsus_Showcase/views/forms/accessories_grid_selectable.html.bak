@@ -1,7 +1,0 @@
-{{extend 'layout.html'}}
-<h1>This is the forms/accessories_grid_selectable.html template</h1>
-{{=BEAUTIFY(response._vars)}}
-
-{{extend 'layout.html'}}
-<h1>Select Accessories</h1>
-{{=accessories_grid_selectable}}
