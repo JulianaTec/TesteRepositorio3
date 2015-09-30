@@ -6,5 +6,5 @@ import default
 
 class TestIndex(TestCase):
     def test_index(self):
-        self.assertEqual(default.index()['nome'],'blai')
+        self.assertEqual(default.index()['nome'],'Teste será feito aqui')
       
