@@ -17,7 +17,7 @@ def index():
     return auth.wiki()
     """
     response.flash = "Hello World"
-    nome = "Teste será feito aqui"
+    nome = "Teste sera feito aqui"
     message='Welcome to web2py!'
 
     return dict(locals())
