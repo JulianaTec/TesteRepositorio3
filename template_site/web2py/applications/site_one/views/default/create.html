@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+    <header class="container-fluid background">
+      <div class="jumbotron text-center">
+        {{if response.title:}}
+        <h1>{{=response.title}}
+          <small>create</small></h1>
+        {{pass}}
+      </div>
+    </header>
+{{end}}
+
+<h1>Create new wiki page</h1>
+{{=form}}

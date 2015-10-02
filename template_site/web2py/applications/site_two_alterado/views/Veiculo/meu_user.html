@@ -1,0 +1,65 @@
+{{right_sidebar_enabled=True}}
+{{left_sidebar_enabled=True}}
+{{'message' in globals()}}
+
+{{extend 'layout.html'}}
+
+{{block header}}
+    <header class="container-fluid background">
+      <div class="jumbotron text-center">
+        {{if response.title:}}
+        <h1>{{=title}}
+          <small>{{=response.subtitle or ''}}</small></h1>
+        {{pass}}
+      </div>
+    </header>
+{{end}}
+
+{{block left_sidebar}}
+<div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title"><a class="btn-block"
+      href="{{=URL('admin','default','index')}}">
+      <i class="glyphicon glyphicon-cog"></i>
+      {{=T("admin")}}
+    </a></h3>
+  </div>
+  <div class="panel-body">
+     <div>
+      {{=MENU(response.MeuMenu,_class='sf-menu')}}
+     </div>
+  </div>
+</div>
+
+    <h1>Pesquisando carro</h1>
+    {{=form_crud}}
+    {{=table_crud}}
+
+{{end}}
+
+{{block center}}
+<div id="web2py_user_form">
+{{=form}}
+
+  {{if request.args(0)=='login':}}
+    {{if not 'register' in auth.settings.actions_disabled:}}
+      <br/><a href="{{=URL(c='default',f='user',args='register')}}">register</a>
+    {{pass}}
+    {{if not 'request_reset_password' in auth.settings.actions_disabled:}}
+      <br/>
+      <a href="{{=URL(c='default',f='user',args='request_reset_password')}}">lost password</a>
+    {{pass}}
+  {{pass}}
+</div>
+
+  form_grupo
+
+{{end}}
+
+{{block right_sidebar}}
+<div style="text-align: center">
+
+    <h1>Altera/Deleta carro</h1>
+    {{=form_carro}}
+
+</div>
+{{end}}

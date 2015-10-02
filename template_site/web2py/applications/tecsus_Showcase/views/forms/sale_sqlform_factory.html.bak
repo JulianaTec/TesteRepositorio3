@@ -1,0 +1,3 @@
+{{extend 'layout.html'}}
+                <h1>This is the forms/sale_sqlform_factory.html template</h1>
+{{=sale_sqlform_factory}}

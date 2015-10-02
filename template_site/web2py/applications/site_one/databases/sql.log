@@ -1,0 +1,5625 @@
+timestamp: 2015-05-26T10:09:01.687000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2015-05-26T10:09:01.687000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2015-05-26T10:09:01.703000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2015-05-26T10:09:01.703000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2015-05-26T10:09:01.703000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2015-05-26T10:09:01.718000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2015-05-26T15:35:04.843000
+CREATE TABLE image(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512) UNIQUE,
+    file CHAR(512)
+);
+success!
+timestamp: 2015-05-26T15:35:04.906000
+CREATE TABLE post(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    image_id INTEGER REFERENCES image (id) ON DELETE CASCADE,
+    author CHAR(512),
+    email CHAR(512),
+    body TEXT
+);
+success!
+timestamp: 2015-05-26T17:25:11.296000
+ALTER TABLE auth_user ADD username CHAR(128);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-06-03T16:16:56.921000
+CREATE TABLE page(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    body TEXT,
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-06-03T16:18:38.578000
+CREATE TABLE post2(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    page_id INTEGER REFERENCES page (id) ON DELETE CASCADE,
+    body TEXT,
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2015-06-03T16:18:38.593000
+CREATE TABLE document(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    page_id INTEGER REFERENCES page (id) ON DELETE CASCADE,
+    name CHAR(512),
+    file CHAR(512),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-06-08T13:57:25.906000
+CREATE TABLE wiki_page(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug CHAR(512),
+    title CHAR(255) UNIQUE,
+    body TEXT NOT NULL,
+    tags TEXT,
+    can_read TEXT,
+    can_edit TEXT,
+    changelog CHAR(512),
+    html TEXT,
+    render CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2015-06-08T13:57:25.953000
+CREATE TABLE wiki_tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    wiki_page INTEGER REFERENCES wiki_page (id) ON DELETE CASCADE,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2015-06-08T13:57:25.953000
+CREATE TABLE wiki_media(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wiki_page INTEGER REFERENCES wiki_page (id) ON DELETE CASCADE,
+    title CHAR(512),
+    filename CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-07-01T15:18:15.671000
+CREATE TABLE mytable(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    myfield CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-07-01T15:28:36.421000
+CREATE TABLE mytable(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    myfield CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2015-07-01T16:42:47.546000
+CREATE TABLE person(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-02T09:44:04.453000
+CREATE TABLE myfile(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    image CHAR(512)
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+DROP TABLE person;
+success!
+success!
+success!
+timestamp: 2015-07-02T16:23:36.843000
+CREATE TABLE person(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-02T17:04:40.609000
+ALTER TABLE myfile ADD image_file BLOB;
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T09:57:24.171000
+CREATE TABLE person2(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    visits INTEGER
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T14:13:46.375000
+CREATE TABLE log(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event CHAR(512),
+    event_time TIMESTAMP,
+    severity INTEGER
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T14:17:28.078000
+CREATE TABLE item(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    unit_price DOUBLE,
+    quantity INTEGER,
+    total_price CHAR(512)
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T14:34:46.796000
+CREATE TABLE product(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    colors TEXT
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T15:05:24.718000
+CREATE TABLE tag(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+timestamp: 2015-07-03T15:05:24.921000
+CREATE TABLE product2(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    tags TEXT
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T15:49:06.312000
+CREATE TABLE sysuser(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(512),
+    fullname CHAR(512)
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+timestamp: 2015-07-03T15:50:29.906000
+CREATE TABLE sysuser2(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username CHAR(512),
+    points CHAR(512)
+);
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!
+success!
+success!
+DELETE FROM person;
+DELETE FROM sqlite_sequence WHERE name='person';
+success!

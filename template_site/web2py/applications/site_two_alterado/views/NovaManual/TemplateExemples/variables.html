@@ -1,0 +1,29 @@
+
+<h1>Your variables</h1>
+
+<h2>a={{=a}}</h2>
+<h2>a={{=b}}</h2>
+
+<h1>For loop</h1>
+
+{{for number in ['one','two','three']:}}
+  <h2>{{=number.capitalize()}}</h2>
+{{pass}}
+
+<h1>If statement</h1>
+
+{{c=10}}
+
+{{if c%2==0:}}
+<h2>{{=c}} is even</h2>
+{{else:}}
+<h2>{{=c}} is odd</h2>
+{{pass}}
+
+<h1>Try... except</h1>
+
+{{try:}}
+   <h2>a={{=1/0}}</h2>
+{{except:}}
+   infinity</h2>
+{{pass}}

@@ -1,0 +1,95 @@
+timestamp: 2015-06-24T15:53:49.251444
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2015-06-24T15:53:49.264504
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2015-06-24T15:53:49.276155
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2015-06-24T15:53:49.288466
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2015-06-24T15:53:49.301470
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2015-06-24T15:53:49.314979
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2015-06-24T15:53:49.328489
+CREATE TABLE accessory(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accessory_name CHAR(512),
+    accessory_price DOUBLE,
+    accessory_image_file CHAR(512)
+);
+success!
+timestamp: 2015-06-24T15:53:49.390162
+CREATE TABLE car_model(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    car_model CHAR(512),
+    car_base_price DOUBLE
+);
+success!
+timestamp: 2015-06-24T15:53:49.517565
+CREATE TABLE vendor(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    vendor_name CHAR(512),
+    vendor_birthday DATE,
+    vendor_cpf CHAR(512)
+);
+success!
+timestamp: 2015-06-24T15:53:49.532703
+CREATE TABLE sale(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    car_id INTEGER REFERENCES car_model (id) ON DELETE CASCADE,
+    vendor_id INTEGER REFERENCES vendor (id) ON DELETE CASCADE,
+    sale_date DATE,
+    sale_discount INTEGER,
+    sale_total_price DOUBLE
+);
+success!
+timestamp: 2015-06-24T15:55:15.233631
+CREATE TABLE accessory_list(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sale_id INTEGER REFERENCES sale (id) ON DELETE CASCADE,
+    accessory_id INTEGER REFERENCES accessory (id) ON DELETE CASCADE
+);
+success!

@@ -1,0 +1,630 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.TypeError'> 'builtin_function_or_method' object has no attribute '__getitem__'"
+p3
+sS'layer'
+p4
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\controllers/NovaManual.py'
+p5
+sS'code'
+p6
+S'__author__ = \'TecSUS-3\'\n\ndef NovaManual():\n    \'\'\'\n    Teste de como fazer um menu de op\xc3\xa7\xc3\xb5es\n    \'\'\'\n    response.menu=[[\'Inicial  - true\',True,\'http://127.0.0.1:8000/site_two_alterado/\'],\n                   [\'Exemplos Simples\',False,URL(\'ExemplosSimples\')],\n                   [\'Session Examples\',False,URL(\'SessionExamples\')],\n                   [\'Template Examples\',False,URL(\'TemplateExamples\')],\n                   [\'form\',False,URL(\'form\')],\n                   [\'db test\',False,URL(\'db_teste\')],\n                   [\'cache\',False,URL(\'cache_teste\')],\n                   [\'ajax\',False,URL(\'ajax_teste\')],\n                   [\'testing\',False,URL(\'testing\')],\n                   [\'form validators\',False,URL(\'FormValidators\')],\n                   [\'valida antes de submeter\',False,URL(\'insert_numbers\')],\n                   [\'verifica mudan\xc3\xa7a antes de submeter\',False,URL(\'edit_dog\')],\n                   [\'sqlform\',False,URL(\'display_form\')],\n                   [\'1 form 2 tables\',False,URL(\'register\')],\n                   [\'geral\',False,URL(\'formsGeral\')],\n                   [\'CRUDE\',False,URL(\'formCrude\')],\n                  ]\n    response.flash=\'Nova Manual\'\n    return dict(message=T("Nova Manual return"))\n\ndef formCrude():\n    \'\'\'\n    Teste de como fazer um menu de op\xc3\xa7\xc3\xb5es\n    \'\'\'\n    response.menu=[\n                   [\'Exemplos Simples\',False,URL(\'crudeGeral\')],\n\n                  ]\n    response.flash=\'Nova Manual\'\n    return dict(message=T("Nova Manual return"))\n\n\ndef ExemplosSimples():\n    \'\'\'\n    Teste de como fazer um menu de op\xc3\xa7\xc3\xb5es\n    \'\'\'\n    response.menu=[[\'Nova Manual  - true\',True,URL(\'NovaManual\')],\n                   [\'teste 2  - false\',False,URL(\'database_lists_grid\')],\n                   [\'hello 4 -  Retorna com menu\',False,URL(\'hello4\')],\n                   [\'hello 5 - Retorna vermelho\',False,URL(\'hello5\')],\n                   [\'status - toolbar\',False,URL(\'status\')],\n                   [\'json\',False,URL(\'makejson\')],\n                   [\'make rtf\',False,URL(\'makertf\')],\n                   [\'rss\',False,URL(\'rss_aggregator\')],\n                   [\'markmin ajax\',False,URL(\'ajaxwiki\')],\n                   ]\n    response.flash=\'Exemplos Simples\'\n    return dict(message=T("ExemplosSimples"))\n\ndef SessionExamples():\n    \'\'\'\n    Teste de como fazer um menu de op\xc3\xa7\xc3\xb5es\n    \'\'\'\n    response.menu=[[\'Nova Manual\',True,URL(\'NovaManual\')],\n                   [\'counter\',False,URL(\'counter\')],\n                   ]\n    response.flash=\'Exemplos Simples\'\n    return dict(message=T("ExemplosSimples"))\n\ndef TemplateExamples():\n\n    response.menu=[[\'Nova Manual  - true\',True,URL(\'NovaManual\')],\n                   [\'variables\',False,URL(\'variables\')],\n                   [\'test_for\',False,URL(\'test_for\')],\n                   [\'hello 5 - Retorna vermelho\',False,URL(\'hello5\')],\n                   [\'status - toolbar\',False,URL(\'status\')],\n                   [\'json\',False,URL(\'makejson\')],\n                   [\'make rtf\',False,URL(\'makertf\')],\n                   [\'rss\',False,URL(\'rss_aggregator\')],\n                   [\'markmin ajax\',False,URL(\'ajaxwiki\')],\n                   ]\n    return dict(globals())\n\ndef cache_teste():\n    return globals()\n\ndef ajax_teste():\n    return globals()\n\ndef data_view():\n    return dict()\n\n###################################################################\n#Exemplo Simples\n###################################################################\n\n\'\'\'\nTeste que cria um flash, muda de p\xc3\xa1gina e escreve hello world\n\'\'\'\ndef hello4():\n    response.view=\'http://127.0.0.1:8000/site_two_alterado/\'\n    response.flash=T("Hello World in a flash!")\n    return dict(message=T("Hello World"))\n\n\'\'\'\nTeste que retorna uma mensagem em vermelho\n\'\'\'\ndef hello5():\n    return HTML(BODY(H1(T(\'Hello World\'),_style="color: red;"))).xml() # .xml to serialize\n\n\'\'\'\nN\xc3\xa3o funciona, acho que deveria mudar a posi\xc3\xa7\xc3\xa3o do menu\n\'\'\'\ndef status():\n    return dict(toobar=response.toolbar())\n\n\'\'\'\nn\xc3\xa3o entendi pra que serve\n\'\'\'\ndef makejson():\n   return response.json([\'foo\', {\'bar\': (\'baz\', None, 1.0, 2)}])\n\n\'\'\'\nEscreve em documento\n\'\'\'\ndef makertf():\n    import gluon.contrib.pyrtf as q\n    doc=q.Document()\n    section=q.Section()\n    doc.Sections.append(section)\n    section.append(\'Este \xc3\xa9 um teste de txt\')\n    section.append(\'Muito doido. \'*100)\n    response.headers[\'Content-Type\']=\'text/rtf\'\n    return q.dumps(doc)\n\n\'\'\'\nN\xc3\xa3o funciona, mas tb n\xc3\xa3o entendi pra que serve\n\'\'\'\ndef rss_aggregator():\n    import datetime\n    import gluon.contrib.rss2 as rss2\n    import gluon.contrib.feedparser as feedparser\n    d = feedparser.parse("http://rss.slashdot.org/Slashdot/slashdot/to")\n\n    rss = rss2.RSS2(title=d.channel.title,\n    link = d.channel.link,\n    description = d.channel.description,\n    lastBuildDate = datetime.datetime.now(),\n    items = [\n       rss2.RSSItem(\n         title = entry.title,\n         link = entry.link,\n         description = entry.description,\n         # guid = rss2.Guid(\'unkown\'),\n         pubDate = datetime.datetime.now()) for entry in d.entries]\n       )\n    response.headers[\'Content-Type\']=\'application/rss+xml\'\n    return rss2.dumps(rss)\n\n\'\'\'\nEsses dois \xc3\xbaltimos n\xc3\xa3o funcionaram corretamente\n\'\'\'\ndef ajaxwiki():\n    form=FORM(TEXTAREA(_id=\'text\',_name=\'text\'),INPUT(_type=\'button\',_value=\'markmin\',_onclick="ajax(\'ajaxwiki_onclick\',[\'text\'],\'html\')"))\n    return dict(form=form,html=DIV(_id=\'html\'))\n\ndef ajaxwiki_onclick():\n   return MARKMIN(request.vars.text).xml()\n\n   \'\'\'\n    Teste de como fazer um menu de op\xc3\xa7\xc3\xb5es\n    \'\'\'\n\n###################################################################\n#Sessions\n###################################################################\n\n\'\'\'\nconta quantas vezes a pessoa entrou na p\xc3\xa1gina\n\'\'\'\ndef counter():\n    session.counter = (session.counter or 0) + 1\n    return dict(counter=session.counter)\n\n\n###################################################################\n#Templates\n###################################################################\n\n\n\'\'\'\nLoop n\xc3\xa3o funcionou e as demais tamb\xc3\xa9m\n\'\'\'\ndef variables():\n    return dict(a=10, b=20)\n\ndef test_for():\n    return dict()\n########\n\ndef form():\n    form=FORM(TABLE(TR("Your name:",INPUT(_type="text",_name="name",requires=IS_NOT_EMPTY())),\n                    TR("Your email:",INPUT(_type="text",_name="email",requires=IS_EMAIL())),\n                    TR("Admin",INPUT(_type="checkbox",_name="admin")),\n                    TR("Sure?",SELECT(\'yes\',\'no\',_name="sure",requires=IS_IN_SET([\'yes\',\'no\']))),\n                    TR("Profile",TEXTAREA(_name="profile",value="write something here")),\n                    TR("",INPUT(_type="submit",_value="SUBMIT"))))\n    if form.accepts(request,session):\n        response.flash="form accepted"\n    elif form.errors:\n        response.flash="form is invalid"\n    else:\n        response.flash="please fill the form"\n    return dict(form=form,vars=form.vars)\n\n###################################################################\n#db\n###################################################################\n\ndef RegisterPerson():\n    # create an insert form from the table\n    form = SQLFORM(db.person).process()\n    form.add_button(\'Back\', URL(\'db_teste\'))\n\n    # if form correct perform the insert\n    if form.accepted:\n        response.flash = \'new record inserted\'\n\n    # and get a list of all persons\n    records = SQLTABLE(db().select(db.person.ALL),headers=\'fieldname:capitalize\')\n\n    return dict(form=form, records=records)\n\ndef RegisterProduct():\n    # create an insert form from the table\n    form = SQLFORM(db.product).process()\n    form.add_button(\'Back\', URL(\'db_teste\'))\n\n    if form.accepted:\n        response.flash = \'new record inserted\'\n\n    records = SQLTABLE(db().select(db.product.ALL),\n                      upload = URL(\'download\'), # allows pics preview\n                      headers=\'fieldname:capitalize\')\n\n    return dict(form=form, records=records)\n\ndef buy():\n\n     form = SQLFORM.factory(\n        Field(\'buyer_id\',requires=IS_IN_DB(db,db.person.id,\'%(name)s\')),\n        Field(\'product_id\',requires=IS_IN_DB(db,db.product.id,\'%(name)s\')),\n        Field(\'quantity\',\'integer\',requires=IS_INT_IN_RANGE(1,100))).process()\n\n     form.add_button(\'Back\', URL(\'db_teste\'))\n\n     if form.accepted:\n        # get previous purchese for same product\n        purchase = db((db.purchase.buyer_id == form.vars.buyer_id)&\n            (db.purchase.product_id==form.vars.product_id)).select().first()\n\n        if purchase:\n            # if list contains a record, update that record\n            purchase.update_record(\n                quantity = purchase.quantity+form.vars.quantity)\n        else:\n            # self insert a new record in table\n            db.purchase.insert(buyer_id=form.vars.buyer_id,\n                               product_id=form.vars.product_id,\n                               quantity=form.vars.quantity)\n        response.flash = \'product purchased!\'\n     elif form.errors:\n        response.flash = \'invalid values in form!\'\n\n     # now get a list of all purchases\n     records = SQLTABLE(db(purchased).select(),headers=\'fieldname:capitalize\')\n\n     return dict(form=form, records=records)\n\ndef db_teste():\n    return locals()\n\n#def download():\n#    return response.download(request,db)\n\ndef manage_transactions():\n    grid = SQLFORM.smartgrid(db.person,linked_tables=[\'product\',\'purchase\'],\n                             user_signature=False)\n    return dict(grid=grid)\n\n###################################################################\n#Cache\n###################################################################\n\ndef cache_in_ram():\n    import time\n    t=cache.ram(\'time\',lambda:time.ctime(),time_expire=5)\n    return dict(time=t,link=A(\'click to reload\',_href=URL(r=request)))\n\n\n###################################################################\n#Ajax\n###################################################################\n\n\'\'\'\nEste n\xc3\xa3o funcionou tamb\xc3\xa9m\n\'\'\'\ndef data():\n    if not session.m or len(session.m)==10: session.m=[]\n    if request.vars.q: session.m.append(request.vars.q)\n    session.m.sort()\n    return TABLE(*[TR(v) for v in session.m]).xml()\n\ndef flash():\n    response.flash=\'this text should appear!\'\n    return dict()\n\ndef fade():\n    return dict()\n\n###################################################################\n#testing\n###################################################################\n\ndef testing():\n    \'\'\'\n    This is a docstring. The following 3 lines are a doctest:\n    >>> request.vars.name=\'Max\'\n    >>> index()\n    {\'name\': \'Max\'}\n    \'\'\'\n    return dict(name=request.vars.name)\n\n######################################################################\n#FormValidators\n######################################################################\ndef FormValidators():\n\n    form=FORM(\'Your name:\',\n          INPUT(_name=\'name\', requires=IS_NOT_EMPTY()),\n          INPUT(_type=\'submit\'))\n\n    form.add_button(\'Back\', URL(\'NovaManual\'))\n\n    if form.accepts(request,session):\n       response.flash = \'form accepted\'\n    elif form.errors:\n        response.flash = \'form has errors\'\n    else:\n        response.flash = \'please fill the form\'\n\n\n    db.person.name.show_if = (db.person.email==\'ju@ju.com\')\n    form2 = SQLFORM(db.person).process()\n\n#este pedacinho que era pra mostrar uma mensagem de falha deu errado\n    form3=FORM(\'Your name:\',\n          INPUT(_name=\'name\', requires=IS_NOT_EMPTY()),\n          INPUT(_type=\'submit\'))\n\n    if form3.accepts(request,session):\n       response.flash = \'form accepted\'\n    elif form3.errors:\n        response.flash = \'form has errors\'\n    else:\n        response.flash = \'please fill the form\'\n\n    return dict(form=form, form2=form2, form3=form3)\n\n#########################################################\n#validando antes de submeter\n########################################################\ndef my_form_processing(form):\n    casa = form.vars.asa * form.vars.b\n    if casa < 0:\n       form.errors.b = \'asa*b cannot be negative\'\n    else:\n       form.vars.casa = casa\n\ndef insert_numbers():\n   form = SQLFORM(db.numbers)\n   if form.process(onvalidation=my_form_processing).accepted:\n       session.flash = \'record inserted\'\n       redirect(URL())\n\n   form.add_button(\'Back\', URL(\'NovaManual\'))\n\n   return dict(form=form)\n\n#########################################################\n#verifica se foi modificado antes de salvar  a altera\xc3\xa7\xc3\xa3o\n########################################################\ndef edit_dog():\n   # dog = db.dog(request.args(0)) or redirect(URL(\'FormValidators\'))\n    form=SQLFORM(db.dog)\n    form.process(detect_record_change=True)\n    if form.record_changed:\n        msg = \'mudou\'\n    elif form.accepted:\n        redirect(URL(\'NovaManual\'))\n    else:\n        msg = \'erro\'\n\n    form.add_button(\'Back\', URL(\'NovaManual\'))\n\n    return dict(form=form,msg=msg)\n\n#########################################################\n#testes com sqlform\n########################################################\ndef display_form():\n\n   form2 = SQLFORM(db.person4,deletable=True, labels={\'name\':\'digite seu nome\'},buttons = [TAG.button(\'Back\',_type="button",_onClick = "parent.location=\'%s\' " % URL(\'NovaManual\')),TAG.button(\'Next\',_type="submit")])\n\n   Field(\'image\', \'upload\', uploadfolder=\'FormValidators\')\n\n   #form2 = SQLFORM(db.person4)\n   my_extra_element = TR(LABEL(\'I agree to the terms and conditions\'),INPUT(_name=\'agree\',value=True,_type=\'checkbox\'))\n   form2[0].insert(-1,my_extra_element)\n\n   if form2.process().accepted:\n       response.flash = \'form accepted\'\n   elif form2.errors:\n       response.flash = \'form has errors\'\n   else:\n       response.flash = \'please fill out the form\'\n\n\n   record = db.person4(request.args(0)) or redirect(URL(\'FormValidators\'))\n   url = URL(\'download\')\n\n   form = SQLFORM(db.person4, record, deletable=True,upload=url, fields=[\'name\', \'image\'])\n\n   Field(\'image\', \'upload\', uploadfolder=\'FormValidators\')\n\n   if request.vars.image!=None:\n        form.vars.image_filename = request.vars.image_filename\n   if form.process().accepted:\n        response.flash = \'form accepted\'\n   elif form.errors:\n        response.flash = \'form has errors\'\n\n   return dict(form=form, form2=form2)\n\ndef download():\n    return response.download(request, db)\n\n\n#########################################################\n#testes de form factory\n########################################################\n\ndef form_from_factory():\n    form = SQLFORM.factory(\n        Field(\'your_name\', requires=IS_NOT_EMPTY()),\n        Field(\'your_image\', \'upload\'))\n\n    Field(\'your_image\', \'upload\', uploadfolder=\'FormValidators\')\n\n    if form.process().accepted:\n        response.flash = \'form accepted\'\n        session.your_name = form.vars.your_name\n        session.your_image = form.vars.your_image\n    elif form.errors:\n        response.flash = \'form has errors\'\n\n    return dict(form=form)\n\n\n#########################################################\n#um form e duas tabelas\n########################################################\ndef register():\n    form=SQLFORM.factory(db.client,db.address)\n    if form.process().accepted:\n        id = db.client.insert(**db.client._filter_fields(form.vars))\n        form.vars.client=id\n        id = db.address.insert(**db.address._filter_fields(form.vars))\n        response.flash=\'Thanks for filling the form\'\n    return dict(form=form)\n\n#########################################################\n#form de confirma\xc3\xa7\xc3\xa3o\n########################################################\ndef formsGeral():\n\n    form = FORM.confirm(\'Are you sure?\')\n    if form.accepted:register()\n\n    form2 = FORM.confirm(\'Are you sure?\',{\'Back\':URL(\'other_page\')})\n    if form2.accepted:register()\n\n    return dict(form=form,form2=form2)\n\n\n#########################################################\n#CRUDE\n########################################################\ndef crudeGeral():\n\n    from gluon.tools import Crud\n    crud = Crud(db)\n\n    crud.tables()\n    crud.create(db.client)\n    crud.read(db.client,id)\n\n    return dict()\nresponse._vars=response._caller(crudeGeral)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__hash__'
+p12
+S"<method-wrapper '__hash__' of exceptions.TypeError object>"
+p13
+sS'__setattr__'
+p14
+S"<method-wrapper '__setattr__' of exceptions.TypeError object>"
+p15
+sS'__reduce_ex__'
+p16
+S'<built-in method __reduce_ex__ of exceptions.TypeError object>'
+p17
+sS'__getslice__'
+p18
+S"<method-wrapper '__getslice__' of exceptions.TypeError object>"
+p19
+sS'__getitem__'
+p20
+S"<method-wrapper '__getitem__' of exceptions.TypeError object>"
+p21
+sS'__setstate__'
+p22
+S'<built-in method __setstate__ of exceptions.TypeError object>'
+p23
+sS'__reduce__'
+p24
+S'<built-in method __reduce__ of exceptions.TypeError object>'
+p25
+sS'__str__'
+p26
+S"<method-wrapper '__str__' of exceptions.TypeError object>"
+p27
+sS'__format__'
+p28
+S'<built-in method __format__ of exceptions.TypeError object>'
+p29
+sS'__getattribute__'
+p30
+S"<method-wrapper '__getattribute__' of exceptions.TypeError object>"
+p31
+sS'__class__'
+p32
+S"<type 'exceptions.TypeError'>"
+p33
+sS'__unicode__'
+p34
+S'<built-in method __unicode__ of exceptions.TypeError object>'
+p35
+sS'__delattr__'
+p36
+S"<method-wrapper '__delattr__' of exceptions.TypeError object>"
+p37
+sS'__subclasshook__'
+p38
+S'<built-in method __subclasshook__ of type object>'
+p39
+sS'__repr__'
+p40
+S"<method-wrapper '__repr__' of exceptions.TypeError object>"
+p41
+sS'args'
+p42
+S'("\'builtin_function_or_method\' object has no attribute \'__getitem__\'",)'
+p43
+sS'__dict__'
+p44
+S'{}'
+p45
+sS'__sizeof__'
+p46
+S'<built-in method __sizeof__ of exceptions.TypeError object>'
+p47
+sS'__doc__'
+p48
+S"'Inappropriate argument type.'"
+p49
+sS'__init__'
+p50
+S"<method-wrapper '__init__' of exceptions.TypeError object>"
+p51
+sS'__new__'
+p52
+S'<built-in method __new__ of type object>'
+p53
+ssS'evalue'
+p54
+S"'builtin_function_or_method' object has no attribute '__getitem__'"
+p55
+sS'request'
+p56
+cgluon.html
+XML_unpickle
+p57
+(S's\xcda\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>site_two_alterado</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>NovaManual</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-def6ce12-7162-46e8-83c6-dee9cc1c7894<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_site_two_alterado</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-c4a60a05-ddd0-48e5-8c3d-f94e953a2781<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CACHE_CONTROL</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-c4a60a05-ddd0-48e5-8c3d-f94e953a2781; session_id_site_two_alterado=127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546; session_id_admin=127.0.0.1-def6ce12-7162-46e8-83c6-dee9cc1c7894</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/site_two_alterado/NovaManual/formCrude</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_UPGRADE_INSECURE_REQUESTS</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/site_two_alterado/NovaManual/crudeGeral</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>50641</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>TecSUS-3-PC</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two_alterado\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\welcome\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x3757cb0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;192.241.173.135&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;TecSUS-3-PC&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cache_control</td><td style="vertical-align:top;">:</td><td><div>max-age=0</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>session_id_welcome=127.0.0.1-c4a60a05-ddd0-48e5-8c3d-f94e953a2781; session_id_site_two_alterado=127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546; session_id_admin=127.0.0.1-def6ce12-7162-46e8-83c6-dee9cc1c7894</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/site_two_alterado/NovaManual/formCrude</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_upgrade_insecure_requests</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>192.241.173.135</div></td></tr><tr><td><div>fe80::487:2eff:2cf4:8cd6%11</div></td></tr><tr><td><div>TecSUS-3-PC</div></td></tr><tr><td><div>TecSUS-3-PC.tecsus.com.br</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.0.2</div></td></tr><tr><td><div>fe80::5efe:192.168.0.2%12</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/site_two_alterado/NovaManual/crudeGeral</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>50641</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/site_two_alterado/NovaManual/crudeGeral</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>TecSUS-3-PC</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.10.4-stable+timestamp.2015.04.26.15.11.54</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x01D9D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x036F2F10&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x0A45F370&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x01D9D0D0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x036F2F10&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x0A45F370&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>crudeGeral</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\admin\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two_alterado\\\\&#x27;, &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\welcome\\\\&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x3757cb0: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;192.241.173.135&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;scheduler_groups&#x27;: None, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;TecSUS-3-PC&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>192.241.173.135</div></td></tr><tr><td><div>fe80::487:2eff:2cf4:8cd6%11</div></td></tr><tr><td><div>TecSUS-3-PC</div></td></tr><tr><td><div>TecSUS-3-PC.tecsus.com.br</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>192.168.0.2</div></td></tr><tr><td><div>fe80::5efe:192.168.0.2%12</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.10.4-stable+timestamp.2015.04.26.15.11.54</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_sheduler</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2015, 8, 13, 11, 18, 42, 953000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/site_two_alterado/NovaManual/crudeGeral</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2015, 8, 13, 14, 18, 42, 953000)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">uuid</td><td style="vertical-align:top;">:</td><td><div>site_two_alterado/127.0.0.1.2015-08-13.11-18-42.1226dd61-d8cd-4b74-9265-5ef5d8f28a55</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x0A271290&gt;</div></td></tr></table></div>'
+tRp58
+sS'frames'
+p59
+(lp60
+(dp61
+S'file'
+p62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\restricted.py'
+p63
+sS'dump'
+p64
+(dp65
+S'environment'
+p66
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p67
+sS'ccode'
+p68
+S'<code object <module> at 0A27FDE8, file "C:\\User..._two_alterado\\controllers/NovaManual.py", line 1>'
+p69
+ssS'lnum'
+p70
+I227
+sS'lines'
+p71
+(dp72
+I224
+S'            ccode = code'
+p73
+sI225
+S'        else:'
+p74
+sI226
+S'            ccode = compile2(code, layer)'
+p75
+sI227
+S'        exec ccode in environment'
+p76
+sI228
+S'    except HTTP:'
+p77
+sI229
+S'        raise'
+p78
+sI230
+S'    except RestrictedError:'
+p79
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p80
+sI222
+S'    try:'
+p81
+sI223
+S'        if isinstance(code, types.CodeType):'
+p82
+ssS'call'
+p83
+S'(code="__author__ = \'TecSUS-3\'\\n\\ndef NovaManual():\\n    \'...ct()\\nresponse._vars=response._caller(crudeGeral)\\n", environment={\'A\': <class \'gluon.html.A\'>, \'ANY_OF\': <class \'gluon.validators.ANY_OF\'>, \'ASSIGNJS\': <function ASSIGNJS>, \'AppConfig\': <function AppConfig>, \'Auth\': <class \'gluon.tools.Auth\'>, \'B\': <class \'gluon.html.B\'>, \'BEAUTIFY\': <class \'gluon.html.BEAUTIFY\'>, \'BODY\': <class \'gluon.html.BODY\'>, \'BR\': <class \'gluon.html.BR\'>, \'BUTTON\': <class \'gluon.html.BUTTON\'>, ...}, layer=r\'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\a...tions\\site_two_alterado\\controllers/NovaManual.py\')'
+p84
+sS'func'
+p85
+S'restricted'
+p86
+sa(dp87
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\controllers\\NovaManual.py'
+p88
+sg64
+(dp89
+sg70
+I505
+sg71
+(dp90
+I495
+S'def crudeGeral():'
+p91
+sI496
+S''
+sI497
+S'    from gluon.tools import Crud'
+p92
+sI498
+S'    crud = Crud(db)'
+p93
+sI499
+S''
+sI500
+S'    crud.tables()'
+p94
+sI501
+S'    crud.create(db.client)'
+p95
+sI502
+S'    crud.read(db.client,id)'
+p96
+sI503
+S''
+sI504
+S'    return dict()'
+p97
+ssg83
+S'()'
+p98
+sg85
+S'<module>'
+p99
+sa(dp100
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\globals.py'
+p101
+sg64
+(dp102
+S'self'
+p103
+S'undefined'
+p104
+sS'f'
+S'<function crudeGeral>'
+p105
+ssg70
+I393
+sg71
+(dp106
+I388
+S"        self.flash = ''            # used by the default view layout"
+p107
+sI389
+S'        self.meta = Storage()      # used by web2py_ajax.html'
+p108
+sI390
+S'        self.menu = []             # used by the default view layout'
+p109
+sI391
+S'        self.files = []            # used by web2py_ajax.html'
+p110
+sI392
+S'        self._vars = None'
+p111
+sI393
+S'        self._caller = lambda f: f()'
+p112
+sI394
+S'        self._view_environment = None'
+p113
+sI395
+S'        self._custom_commit = None'
+p114
+sI396
+S'        self._custom_rollback = None'
+p115
+sI397
+S"        self.generic_patterns = ['*']"
+p116
+ssg83
+S'(f=<function crudeGeral>)'
+p117
+sg85
+S'<lambda>'
+p118
+sa(dp119
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\controllers\\NovaManual.py'
+p120
+sg64
+(dp121
+S'global db'
+p122
+S'<DAL uri="sqlite://storage.sqlite">'
+p123
+sS'builtinid'
+p124
+S'<built-in function id>'
+p125
+sS'crud'
+p126
+S'<gluon.tools.Crud object>'
+p127
+sS'db.tablename'
+p128
+g104
+sS'crud.read'
+p129
+S'<bound method Crud.read of <gluon.tools.Crud object>>'
+p130
+ssg70
+I502
+sg71
+(dp131
+I495
+S'def crudeGeral():'
+p132
+sI496
+S''
+sI497
+S'    from gluon.tools import Crud'
+p133
+sI498
+S'    crud = Crud(db)'
+p134
+sI499
+S''
+sI500
+S'    crud.tables()'
+p135
+sI501
+S'    crud.create(db.client)'
+p136
+sI502
+S'    crud.read(db.client,id)'
+p137
+sI503
+S''
+sI504
+S'    return dict()'
+p138
+ssg83
+S'()'
+p139
+sg85
+S'crudeGeral'
+p140
+sa(dp141
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\tools.py'
+p142
+sg64
+(dp143
+S'self'
+p144
+S'<gluon.tools.Crud object>'
+p145
+sS'separator'
+p146
+g104
+sS'self.settings.label_separator'
+p147
+S"': '"
+p148
+sS'self.settings'
+p149
+S"<Storage {'showid': False, 'delete_onaccept': <S...ble': True, 'create_onvalidation': <Storage {}>}>"
+p150
+ssg70
+I4157
+sg71
+(dp151
+I4160
+S'            return table._filter_fields(form.record, id=True)'
+p152
+sI4161
+S'        return form'
+p153
+sI4152
+S'            readonly=True,'
+p154
+sI4153
+S'            comments=False,'
+p155
+sI4154
+S'            upload=self.settings.download_url,'
+p156
+sI4155
+S'            showid=self.settings.showid,'
+p157
+sI4156
+S'            formstyle=self.settings.formstyle,'
+p158
+sI4157
+S'            separator=self.settings.label_separator'
+p159
+sI4158
+S'            )'
+p160
+sI4159
+S"        if not current.request.extension in ('html', 'load'):"
+p161
+ssg83
+S'(self=<gluon.tools.Crud object>, table=<Table client (id,name)>, record=<built-in function id>)'
+p162
+sg85
+S'read'
+p163
+sa(dp164
+g62
+S'C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\sqlhtml.py'
+p165
+sg64
+(dp166
+S'field'
+p167
+S'<pydal.objects.Field object>'
+p168
+sS'builtinstr'
+p169
+S"<type 'str'>"
+p170
+sS'self'
+p171
+S'<gluon.sqlhtml.SQLFORM object>'
+p172
+sS'self.record_id'
+p173
+S'None'
+p174
+sS'field.name'
+p175
+S"'id'"
+p176
+sS'record'
+p177
+S'<built-in function id>'
+p178
+ssg70
+I1178
+sg71
+(dp179
+I1173
+S'                    if showid and field.name in record and field.readable:'
+p180
+sI1174
+S'                        v = record[field.name]'
+p181
+sI1175
+S'                        widget = SPAN(v, _id=field_id)'
+p182
+sI1176
+S'                        self.custom.dspval.id = str(v)'
+p183
+sI1177
+S'                        xfields.append((row_id, label, widget, comment))'
+p184
+sI1178
+S'                    self.record_id = str(record[field.name])'
+p185
+sI1179
+S'                self.custom.widget.id = widget'
+p186
+sI1180
+S'                continue'
+p187
+sI1181
+S''
+sI1182
+S'            if readonly and not ignore_rw and not field.readable:'
+p188
+ssg83
+S"(self=<gluon.sqlhtml.SQLFORM object>, table=<Table client (id,name)>, record=<built-in function id>, deletable=False, linkto=None, upload='/site_two_alterado/default/download', fields=['id', 'name'], labels=None, col3={}, submit_button='Submit', delete_label='Check to delete', showid=False, readonly=True, comments=False, keepopts=[], ignore_rw=False, record_id=None, formstyle='table3cols', buttons=['submit'], separator=': ', extra_fields=[], **attributes={})"
+p189
+sg85
+g50
+sasS'pyver'
+p190
+S'Python 2.7.8: C:\\Python27\\python.exe (prefix: C:\\Python27)'
+p191
+sS'session'
+p192
+g57
+(S's8\x01\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">last_orderby</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">last_query</td><td style="vertical-align:top;">:</td><td><div>db.address.id&gt;0</div></td></tr></table></div>'
+tRp193
+sS'etype'
+p194
+S"<type 'exceptions.TypeError'>"
+p195
+sS'date'
+p196
+S'Thu Aug 13 11:18:43 2015'
+p197
+sS'response'
+p198
+g57
+(S'slR\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">MeuMenu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Principal</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/Inicio</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Cadastro de Comprador</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/comprador</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Cadastro de Carro</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/carro</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Cadastro de Vendedor</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/vendedor</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Cadastro de Marca</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/marca</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Admin</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/admin</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x0A527160&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_site_two_alterado</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">google_analytics_id</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">logo</td><td style="vertical-align:top;">:</td><td><div><a class="navbar-brand" href="http://www.web2py.com/" id="web2py-logo"><b>web<span>2</span>py</b>&trade;&nbsp;</a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div><table><tr><td><div>Principal</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/site_two_alterado/default/index</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Meus sites</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/site</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Esta aplica\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Design</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/design/site_two_alterado</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Controlador</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/controllers/NovaManual.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Visualiza\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/views/NovaManual/crudeGeral.html</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Modelo BD</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/models/db.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Modelo de Menu</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/models/menu.py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Config.ini</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/private/appconfig.ini</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Layout</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/views/layout.html</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Folha de estilo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/edit/site_two_alterado/static/css/web2py-bootstrap3.css</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>banco de dados</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/site_two_alterado/appadmin/index</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Erros</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/errors/site_two_alterado</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Sobre</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/about/site_two_alterado</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>web2py.com</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Download</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/download</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Suporte</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/support</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Demo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/demo_admin</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Exemplos r\xc3\xa1pidos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/examples/default/examples</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Perguntas frequentes</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/AlterEgo</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>V\xc3\xaddeos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/videos/</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Aplica\xc3\xa7\xc3\xb5es gratuitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/appliances</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com/plugins</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2pyslices.com/</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Documenta\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>#</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Online book</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Pref\xc3\xa1cio</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/00</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Introdu\xc3\xa7\xc3\xa3o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/01</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Python</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/02</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Vis\xc3\xa3o Geral</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/03</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>The Core</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/04</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>As views</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/05</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>banco de dados</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/06</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Formul\xc3\xa1rios e Validadores</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/07</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Email e SMS</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/08</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Controle de Acesso</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/09</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Servi\xc3\xa7o</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/10</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas de Ajax</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/11</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Componentes e Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/12</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Receitas de deploy</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/13</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Outras Receitas</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/14</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Helping web2py</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book/default/chapter/15</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Buy web2py\'s book</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://stores.lulu.com/web2py</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Comunidade</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Grupos</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/examples/default/usergroups</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Twitter</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://twitter.com/web2py</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Chat ao vivo</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://webchat.freenode.net/?channels=web2py</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Minha Pagina Teste</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Forms - accessories grid</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/forms/accessories_grid_selectable.html</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Forms - accessories crud</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/forms/accessory_crud</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Forms - car model</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/forms/car_model_form</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Forms - sale</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/forms/sale_sqlform_factory</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Forms - vendor</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/forms/vendor_sqlform</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Lista grid</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/grids/database_lists_grid</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Lista smartgrid</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/grids/database_lists_smartgrid</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Nova Manual</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/NovaManual/NovaManual</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Apostila</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Gerais</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Apostila/Apostila</div></td></tr></table></div></td></tr><tr><td><div><li class="divider"></li></div></td></tr><tr><td><div><table><tr><td><div>Banco de Dados</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Apostila/BD_Apostila</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Loja de carros</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>Inicial</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://127.0.0.1:8000/site_two_alterado/Veiculo/Inicio</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">author</td><td style="vertical-align:top;">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">description</td><td style="vertical-align:top;">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generator</td><td style="vertical-align:top;">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">keywords</td><td style="vertical-align:top;">:</td><td><div>web2py, python, framework</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^NovaManual/\\w+\\.py$</div></td></tr><tr><td><div>^NovaManual/crudeGeral/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_key</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_site_two_alterado</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;C:\\\\Users\\\\TecSUS-3\\\\Desktop\\\\template_site\\\\web2py\\\\applications\\\\site_two_alterado\\\\sessions\\\\07e\\\\0ec\\\\127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546&#x27;, mode &#x27;rb+&#x27; at 0x0A390B20&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\sessions\\127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>c43992722e84dfcccbd6fbf770754dee</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-52789e5f-b0e9-497f-b95d-51b3d4c96546</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_site_two_alterado</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_locked</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>site_two_alterado</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">subtitle</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">title</td><td style="vertical-align:top;">:</td><td><div>Site Two Alterado</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>NovaManual/crudeGeral.html</div></td></tr></table></div>'
+tRp199
+sS'locals'
+p200
+(dp201
+S'comment'
+p202
+S"''"
+p203
+sS'showid'
+p204
+S'False'
+p205
+sS'sep'
+p206
+S"': '"
+p207
+sS'labels'
+p208
+S'None'
+p209
+sS'delete_label'
+p210
+S"'Check to delete'"
+p211
+sS'nbsp'
+p212
+S'<gluon.html.XML object>'
+p213
+sS'submit_button'
+p214
+S"'Submit'"
+p215
+sS'table'
+p216
+S'<Table client (id,name)>'
+p217
+sS'xfields'
+p218
+S'[]'
+p219
+sS'field'
+p220
+S'<pydal.objects.Field object>'
+p221
+sS'extra_fields'
+p222
+S'[]'
+p223
+sS'comments'
+p224
+g205
+sS'label'
+p225
+S'<gluon.html.LABEL object>'
+p226
+sS'buttons'
+p227
+S"['submit']"
+p228
+sS'ignore_rw'
+p229
+g205
+sS'readonly'
+p230
+S'True'
+p231
+sS'record_id'
+p232
+S'None'
+p233
+sS'fieldname'
+p234
+S"'id'"
+p235
+sS'formstyle'
+p236
+S"'table3cols'"
+p237
+sS'widget'
+p238
+S"''"
+p239
+sS'ofields'
+p240
+S'None'
+p241
+sS'field_id'
+p242
+S"'client_id'"
+p243
+sS'col3'
+p244
+g45
+sS'T'
+S'<gluon.languages.translator object>'
+p245
+sS'linkto'
+p246
+S'None'
+p247
+sS'f'
+S'<pydal.objects.Field object>'
+p248
+sS'fields'
+p249
+S"['id', 'name']"
+p250
+sS'upload'
+p251
+S"'/site_two_alterado/default/download'"
+p252
+sS'keyed'
+p253
+g205
+sS'record'
+p254
+S'<built-in function id>'
+p255
+sS'separator'
+p256
+S"': '"
+p257
+sS'keepopts'
+p258
+S'[]'
+p259
+sS'attributes'
+p260
+g45
+sS'row_id'
+p261
+S"'client_id__row'"
+p262
+sS'self'
+p263
+S'<gluon.sqlhtml.SQLFORM object>'
+p264
+sS'deletable'
+p265
+g205
+sssS'traceback'
+p266
+S'Traceback (most recent call last):\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\controllers/NovaManual.py", line 505, in <module>\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\globals.py", line 393, in <lambda>\n    self._caller = lambda f: f()\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\applications\\site_two_alterado\\controllers/NovaManual.py", line 502, in crudeGeral\n    crud.read(db.client,id)\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\tools.py", line 4157, in read\n    separator=self.settings.label_separator\n  File "C:\\Users\\TecSUS-3\\Desktop\\template_site\\web2py\\gluon\\sqlhtml.py", line 1178, in __init__\n    self.record_id = str(record[field.name])\nTypeError: \'builtin_function_or_method\' object has no attribute \'__getitem__\'\n'
+p267
+s.

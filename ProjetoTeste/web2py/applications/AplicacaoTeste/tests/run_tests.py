@@ -13,15 +13,16 @@
 import sys
 import os
 # Pasta onde fica localizado o web2py
-W2P_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py'
+W2P_PATH = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-4])
 #W2P_PATH = "/home/rodrigo/Arquivos/web2py" #o comando acima pegara este caminho
 # sys.path.append(os.path.abspath(W2P_PATH))
 # sys.path.append(os.path.abspath(W2P_PATH+'/gluon'))
 # sys.path.append(os.path.abspath(W2P_PATH+'/site-packages'))
 # Pasta anterior a pasta atual (raiz projeto)
-PROJECT_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py/applications/AplicacaoTeste'
+PROJECT_PATH = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-2])
 # Pasta atual, onde o run_tests.py está
-ROOT_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py/applications/AplicacaoTeste/tests'
+ROOT_PATH = os.path.dirname(__file__)
+#ROOT_PATH = '/var/lib/jenkins/workspace/ProjetoTeste3/ProjetoTeste/web2py/applications/AplicacaoTeste/tests'
 #adiciona no sys.path os diretorios que contém arquivos ou módulos a serem testados
 mods=['controllers','modules']
 for m in mods:

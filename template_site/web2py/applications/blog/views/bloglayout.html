@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{{include}}<div>{{=response.flash or ''}}</div>
+</body>
+<div class="categories">
+
+{{if 'sidebar' in globals(): sidebar()}}
+
+</div>
+<div class="col2">
+
+{{maincontent()}}
+
+</div>
+</html>

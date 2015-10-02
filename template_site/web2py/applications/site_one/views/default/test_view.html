@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>teste de  view</title>
+</head>
+    {{
+        if i == 0:
+        response.write('i is 0')
+        else:
+        response.write('i is not 0')
+        pass
+    }}
+
+    <br />
+
+    {{for x in range(10):}}
+        {{= x}} hello<br />{{pass}}
+
+    {{=H1(x)}}
+
+    {{items = ['a', 'b', 'c']}}
+    <ul>
+        {{for item in items:}}
+            <li>{{= item}}</li>{{pass}}
+    </ul>
+
+    {{k = 3}}
+    <ul>
+        {{while k > 0:}}
+            <li>{{= k}}{{k = k - 1}}</li>{{pass}}
+    </ul>
+
+    {{
+        import random
+        k = random.randint(0, 100)
+    }}
+    <h2>
+        {{= k}}
+        {{if k % 2:}}is odd
+        {{else:}}is even
+        {{pass}}
+    </h2>
+
+    {{
+        import random
+        k = random.randint(0, 100)
+    }}
+    <h2>
+        {{=k}}
+        {{if k % 4 == 0:}}is divisible by 4
+        {{elif k % 2 == 0:}}is even
+        {{else:}}is odd
+        {{pass}}
+    </h2>
+
+    <br />
+    {{try:}}
+        Hello {{= 1 / 0}}
+    {{except:}}
+        division by zero
+    {{else:}}
+        no division by zero
+    {{finally:}}
+        <br />
+    {{pass}}
+
+    {{def itemize1(link): return LI(A(link, _href="http://" + link))}}
+    <ul>
+        {{=itemize1('www.google.com')}}
+    </ul>
+
+    {{def itemize2(link):}}
+    <li><a href="http://{{=link}}">{{=link}}</a></li>
+        {{return}}
+    <ul>
+        {{itemize2('www.google.com')}}
+    </ul>
+
+    {{=DIV('This ', 'is ', 'a ', 'test!', _id='13', _class='myclass')}}
+
+    {{=DIV(B(I("hello ", "<world>")), _class="myclass")}}
+
+    >>> a = DIV(SPAN('a', 'b'), 'c')
+    >>> print a
+    <div><span>ab</span>c</div>
+    >>> del a[1]
+    >>> a.append(B('x'))
+    >>> a[0][0] = 'y'
+    >>> print a
+    <div><span>yb</span><b>x</b></div>
+
+    <br />
+
+    print DIV(XML("<b>hello</b>"))
+
+    <br />
+
+
+    {{=A('click me', callback=URL('first'))}}
+    <br />
+
+    {{=A('click me', callback=URL('first'), target="t")}}
+        <div id="t"><div>
+    <br />
+
+    <div id="b"> {{=A('click me', callback=URL('first'), delete="div#b")}} </div>
+
+    {{=A('linked page', _href='first', cid='myid')}}
+        <div id="myid"></div>
+
+    <br />
+
+    >>> print B('<hello>', XML('<i>world</i>'), _class='test', _id=0)
+    <b id="0" class="test">&lt;hello&gt;<i>world</i></b>
+
+    <br />
+
+    >>> print CODE('print "hello"', language='python').xml()
+    <table><tr valign="top"><td style="width:40px; text-align: right;"><pre style="
+            font-size: 11px;
+            font-family: Bitstream Vera Sans Mono,monospace;
+            background-color: transparent;
+                margin: 0;
+                padding: 5px;
+                border: none;
+            background-color: #E0E0E0;
+            color: #A0A0A0;
+        ">1.</pre></td><td><pre style="
+            font-size: 11px;
+            font-family: Bitstream Vera Sans Mono,monospace;
+            background-color: transparent;
+                margin: 0;
+                padding: 5px;
+                border: none;
+                overflow: auto;
+        "><span style="color:#185369; font-weight: bold">print </span>
+        <span style="color: #FF9966">"hello"</span></pre></td></tr>
+    </table>
+
+    <br />
+    >>> print B('<hello>', XML('<i>world</i>'), _class='test', _id=0)
+    <b id="0" class="test">&lt;hello&gt;<i>world</i></b>
+
+    <br />
+    >>> print BODY('<hello>', XML('<b>world</b>'), _bgcolor='red')
+    <body bgcolor="red">&lt;hello&gt;<b>world</b></body>
+
+    <br />
+    >>> print CAT('Here is a ', A('link',_href=URL()), ', and here is some ', B('bold text'), '.')
+    Here is a <a href="/app/default/index">link</a>, and here is some <b>bold text</b>.
+
+    <br />
+    >>> print CENTER('<hello>', XML('<b>world</b>'),
+    >>>              _class='test', _id=0)
+    <center id="0" class="test">&lt;hello&gt;<b>world</b></center>
+
+    <br />
+    >>> print COL('a','b')
+    <col>ab</col>
+
+    <br />
+    >>> print COLGROUP('a','b')
+    <colgroup>ab</colgroup>
+
+    <br />
+    >>> print DIV('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <div id="0" class="test">&lt;hello&gt;<b>world</b></div>
+
+    <br />
+    >>> print EM('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <em id="0" class="test">&lt;hello&gt;<b>world</b></em>
+
+    <br />
+    >>> print FIELDSET('Height:', INPUT(_name='height'), _class='test')
+    <fieldset class="test">Height:<input name="height" /></fieldset>
+
+    <br />
+    >>> print FORM(INPUT(_type='submit'), _action='', _method='post')
+    <form enctype="multipart/form-data" action="" method="post">
+    <input type="submit" /></form>
+
+    <br />
+    >>> print FORM(hidden=dict(a='b'))
+    <form enctype="multipart/form-data" action="" method="post">
+    <input value="b" type="hidden" name="a" /></form>
+
+    <br />
+    >>> print H1('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <h1 id="0" class="test">&lt;hello&gt;<b>world</b></h1>
+
+    <br />
+    >>> print HEAD(TITLE('<hello>', XML('<b>world</b>')))
+    <head><title>&lt;hello&gt;<b>world</b></title></head>
+
+    <br />
+    >>> print HTML(BODY('<hello>', XML('<b>world</b>')))
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                          "http://www.w3.org/TR/html4/loose.dtd">
+    <html><body>&lt;hello&gt;<b>world</b></body></html>
+
+
+    <br />
+
+    >>> print HR()
+    <hr />
+
+    <br />
+
+    >>> print IFRAME(_src='http://www.web2py.com')
+    <iframe src="http://www.web2py.com"></iframe>
+    <br />
+
+    >>> IMG(_src='http://example.com/image.png',_alt='test')
+    <img src="http://example.com/image.ong" alt="rest" />
+
+    <br />
+    >>> A(IMG(_src=URL('static','logo.png'), _alt="My Logo"),
+          _href=URL('default','index'))
+    <a href="/site_one/default/index">
+      <img src="/site_one/static/download.jpg" alt="My Logo" />
+    </a>
+
+   <br />
+    >>> print INPUT(_name='test', _value='a')
+    <input value="a" name="test" />
+
+
+   <br />
+    >>> print INPUT(_name='test', _value='a', value='b')
+    <input value="b" name="test" />
+
+
+   <br />
+    >>> for v in ['a', 'b', 'c']:
+    >>>     print INPUT(_type='radio', _name='test', _value=v, value='b'), v
+    <input value="a" type="radio" name="test" /> a
+    <input value="b" type="radio" checked="checked" name="test" /> b
+    <input value="c" type="radio" name="test" /> c
+
+
+   <br />
+    >>> print INPUT(_type='checkbox', _name='test', _value='a', value=True)
+    >>> print INPUT(_type='checkbox', _name='test', _value='a', value=False)
+    <input value="a" type="checkbox" checked="checked" name="test" />
+    <input value="a" type="checkbox" name="test" />
+
+   <br />
+    >>> print LABEL('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <label id="0" class="test">&lt;hello&gt;<b>world</b></label>
+
+
+   <br />
+    >>> print LEGEND('Name', _for='myfield')
+    <legend for="myfield">Name</legend>
+
+    <br />
+    >>> print LI('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <li id="0" class="test">&lt;hello&gt;<b>world</b></li>
+
+    <br />
+   >>> print OL('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <ol id="0" class="test"><li>&lt;hello&gt;</li><li><b>world</b></li></ol>
+
+    <br />
+    >>> print OBJECT('<hello>', XML('<b>world</b>'),
+    >>>              _src='http://www.web2py.com')
+    <object src="http://www.web2py.com">&lt;hello&gt;<b>world</b></object>
+
+    <br />
+    >>> print SELECT('a', OPTGROUP('b', 'c'))
+    <select>
+      <option value="a">a</option>
+      <optgroup>
+        <option value="b">b</option>
+        <option value="c">c</option>
+      </optgroup>
+    </select>
+
+    <br />
+    >>> print OPTION('<hello>', XML('<b>world</b>'), _value='a')
+    <option value="a">&lt;hello&gt;<b>world</b></option>
+    >>> print SELECT('a', 'b', value='b'):
+    <select>
+    <option value="a">a</option>
+    <option value="b" selected="selected">b</option>
+    </select>
+
+    <br />
+    >>> print P('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <p id="0" class="test">&lt;hello&gt;<b>world</b></p>
+
+<br />
+     >>> print PRE('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <pre id="0" class="test">&lt;hello&gt;<b>world</b></pre>
+
+<br />
+    >>> print SCRIPT('alert("hello world");', _type='text/javascript')
+    <script type="text/javascript"><!--
+    alert("hello world");
+    //--></script>
+
+<br />
+    >>> print SELECT('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <select id="0" class="test">
+       <option value="&lt;hello&gt;">&lt;hello&gt;</option>
+       <option value="&lt;b&gt;world&lt;/b&gt;"><b>world</b></option>
+    </select>
+
+<br />
+    >>> print SPAN('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <span id="0" class="test">&lt;hello&gt;<b>world</b></span>
+
+
+<br />
+    >>> print STYLE(XML('body {color: white}'))
+    <style><!--
+    body { color: white }
+    //--></style>
+
+<br />
+    >>> print STYLE(_src='style.css')
+    <style src="style.css"><!--
+    //--></style>
+
+<br />
+    >>> print TABLE(TR(TD('a'), TD('b')), TR(TD('c'), TD('d')))
+    <table>
+        <tr>
+            <td>a</td>
+            <td>b</td>
+        </tr>
+        <tr>
+            <td>c</td>
+            <td>d</td>
+        </tr>
+    </table>
+
+<br />
+    >>> print TABLE(TR('a', 'b'), TR('c', 'd'))
+    <table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table>
+
+<br />
+    >>> table = [['a', 'b'], ['c', 'd']]
+    >>> print TABLE(TR(*table[0]), TR(*table[1]))
+    <table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table>
+
+<br />
+    >>> table = [['a', 'b'], ['c', 'd']]
+    >>> print TABLE(*[TR(*rows) for rows in table])
+    <table><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table>
+
+<br />
+    >>> print TBODY(TR('<hello>'), _class='test', _id=0)
+    <tbody id="0" class="test"><tr><td>&lt;hello&gt;</td></tr></tbody>
+
+<br />
+    >>> print TEXTAREA('<hello>', XML('<b>world</b>'), _class='test')
+    <textarea class="test" cols="40" rows="10">&lt;hello&gt;<b>world</b></textarea>
+
+<br />
+    >>> print TEXTAREA(value="<hello world>", _class="test")
+    <textarea class="test" cols="40" rows="10">&lt;hello world&gt;</textarea>
+
+<br />
+    >>> print TFOOT(TR(TD('<hello>')), _class='test', _id=0)
+    <tfoot id="0" class="test"><tr><td>&lt;hello&gt;</td></tr></tfoot>
+
+<br />
+    >>> print TH('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <th id="0" class="test">&lt;hello&gt;<b>world</b></th>
+
+<br />
+    >>> print THEAD(TR(TH('<hello>')), _class='test', _id=0)
+    <thead id="0" class="test"><tr><th>&lt;hello&gt;</th></tr></thead>
+
+<br />
+    >>> print TITLE('<hello>', XML('<b>world</b>'))
+    <title>&lt;hello&gt;<b>world</b></title>
+
+<br />
+    >>> print TR('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+    <tr id="0" class="test"><td>&lt;hello&gt;</td><td><b>world</b></td></tr>
+
+<br />
+
+>>> print TT('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+<tt id="0" class="test">&lt;hello&gt;<b>world</b></tt>
+
+
+<br />
+
+>>> print UL('<hello>', XML('<b>world</b>'), _class='test', _id=0)
+<ul id="0" class="test"><li>&lt;hello&gt;</li><li><b>world</b></li></ul>
+
+<br />
+
+>>> print xmlescape('<hello>')
+&lt;hello&gt;
+
+<br />
+
+>>> print MENU([['One', False, 'link1'], ['Two', False, 'link2']])
+<ul class="web2py-menu web2py-menu-vertical">
+  <li><a href="link1">One</a></li>
+  <li><a href="link2">Two</a></li>
+</ul>
+
+<br />
+
+>>> print MENU([['One', False, 'link1', [['Two', False, 'link2']]]])
+<ul class="web2py-menu web2py-menu-vertical">
+  <li class="web2py-menu-expand">
+     <a href="link1">One</a>
+     <ul class="web2py-menu-vertical">
+        <li><a href="link2">Two</a></li>
+     </ul>
+  </li>
+</ul>
+
+<br />
+{"a": ["hello", XML("world")], "b": (1, 2)}
+<table>
+<tr><td>a</td><td>:</td><td>hello<br />world</td></tr>
+<tr><td>b</td><td>:</td><td>1<br />2</td></tr>
+</table>
+
+
+<br />
+
+>>> a = DIV(DIV(DIV('a', _id='target',_class='abc')))
+>>> d = a.elements('div#target')
+>>> d[0][0] = 'changed'
+>>> print a
+<div><div><div id="target" class="abc">changed</div></div></div>
+
+<br />
+
+html = TAG('<a>xxx</a><b>yyy</b>')
+for item in html.components: print item
+
+<br />
+
+>>> a = DIV(SPAN('a'),DIV('b'))
+>>> s = a.element('span')
+>>> d = s.parent
+>>> d['_class']='abc'
+>>> print a
+<div class="abc"><span>a</span><div>b</div></div>
+>>> for e in s.siblings(): print e
+<div>b</div>
+
+<br />
+>>> a = DIV(SPAN('x'), DIV(SPAN('y'))
+>>> b = a.elements('span', replace=P('z')
+>>> print a
+<div><p>z</p><div><p>z</p></div>
+
+<br />
+>>> a = DIV(SPAN('x'), DIV(SPAN('y'))
+>>> b = a.elements('span', replace=lambda t: P(t[0])
+>>> print a
+<div><p>x</p><div><p>y</p></div>
+
+<br />
+>>> a = DIV(SPAN('x'), DIV(SPAN('y'))
+>>> b = a.elements('span', replace=None)
+>>> print a
+<div></div>
+
+<br />
+
+
+<br />
+
+
+<br />
+
+<body>
+
+
+
+
+
+
+</body>
+</html>
